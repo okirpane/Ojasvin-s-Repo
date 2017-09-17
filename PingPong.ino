@@ -1,34 +1,4 @@
-/*
-+-----+
-+----[PWR]-------------------| USB |--+    The players are kicking a ball towards each other,
-|                            +-----+  |    trying to score. You must push your button when the
-|         GND/RST2  [ ][ ]            |    light is on your player. If you miss, other player
-|       MOSI2/SCK2  [ ][ ]  A5/SCL[ ] |    scores a goal. If you press your button when the ball
-|          5V/MISO2 [ ][ ]  A4/SDA[ ] |    isn't on your player, other player scores a goal.
-|                             AREF[ ] |
-|                              GND[ ] |
-| [ ]N/C                    SCK/13[G] |    Imagine the goal of Player One here
-| [ ]v.ref                 MISO/12[P] |    Imagine Player One standing here
-| [ ]RST                   MOSI/11[ ]~|
-| [ ]3V3    +---+               10[ ]~|
-| [ ]5v     | A |                9[ ]~|
-| [ ]GND   -| R |-               8[ ] |>--->4 TO 13 ARE FOR LEDS. SEE THE COMMENTS IN THE SETUP METHOD
-| [ ]GND   -| D |-                    |
-| [ ]Vin   -| U |-               7[ ] |
-|          -| I |-               6[ ]~|
-| [ ]A0    -| N |-               5[P]~|    Imagine Player Two standing here
-| [ ]A1    -| O |-               4[G] |    Imagine the goal of Player Two here
-| [ ]A2     +---+           INT1/3[ ]~|----------------->PUSHBUTTON FOR PLAYER ONE
-| [ ]A3                     INT0/2[ ] |----------------->PUSHBUTTON FOR PLAYER TWO
-| [ ]A4/SDA  RST SCK MISO     TX>1[ ] |    Three goals win the game. Ball speed increases with
-| [ ]A5/SCL  [ ] [ ] [ ]      RX<0[ ] |    each hit.
-|            [ ] [ ] [ ]              |
-|  UNO_R3    GND MOSI 5V  ____________/
-\_______________________/
-http://busyducks.com/ascii-art-arduinos
-*/
 
-/* Created with Visual Studio 2015 using Visual Micro extension http://www.visualmicro.com/ */
 
 bool willTheBallGoTowardsPlayerTwo = true;
 bool isInputAllowed = true;
@@ -71,20 +41,16 @@ void setup() {
   pinMode(11, 1);
   pinMode(12, 1);
   pinMode(13, 1);
-  /*Connect pins 4 to 13 to 220ohm resistors, connect the LEDs' longer legs(+) to the resistors,
-    connect the other legs(-) of the LEDs' to ground.
-    I recommend red LEDs for 4 and 13(Goals), yellow LEDs for 5 and 12(Players), green LEDs for other pins(Field).
-  */
 
-  pinMode(2, 0);    //Pushbuttons for players. Pin 2 is for player two. Pin 3 is for player one.
-  pinMode(3, 0);    //Connect pushbuttons following the instructions on this page: https://www.arduino.cc/en/Tutorial/DigitalReadSerial
-}
+
+  pinMode(2, 0);    
+  pinMode(3, 0);    
 
 void loop()
 {
   ListenForInput();
   currentMillis = millis();
-  if (currentMillis - previousMillis >= millisecondsPerLED)  //If you don't understand this, see: https://www.arduino.cc/en/Tutorial/BlinkWithoutDelay
+  if (currentMillis - previousMillis >= millisecondsPerLED)  
   {
     CheckGoalConditions();
     DetermineNextPosition();
@@ -94,7 +60,7 @@ void loop()
   }
 }
 
-void ListenForInput()    //If you don't understand this method. See: https://www.arduino.cc/en/Tutorial/StateChangeDetection
+void ListenForInput()    
 {
   buttonStatePlayerOne = digitalRead(buttonPlayerOne);
   buttonStatePlayerTwo = digitalRead(buttonPlayerTwo);
@@ -136,19 +102,19 @@ void ListenForInput()    //If you don't understand this method. See: https://www
 void ToggleBallDirection()
 {
   willTheBallGoTowardsPlayerTwo = !willTheBallGoTowardsPlayerTwo;
-  isInputAllowed = false;   //Only one direction change per frame is allowed for consistent gameplay.
+  isInputAllowed = false;   
 }
 
 void IncreaseSpeed()
 {
   millisecondsPerLED -= deltaMillisecondsPerLED;
-  if (deltaMillisecondsPerLED > 5)  //Because of this, it takes a little more time to reach to an insane speed. Adjust or remove this if rounds become too long.
+  if (deltaMillisecondsPerLED > 5)  
   {
     deltaMillisecondsPerLED -= 5; 
   }
 }
 
-void MoveBallToNextPosition()      //Moves the ball one spot.
+void MoveBallToNextPosition()      
 {
   previousPosition = currentPosition;
   digitalWrite(previousPosition, 0);
@@ -225,7 +191,7 @@ void ShowScores(int playerCurrentlyScored)
     willTheBallGoTowardsPlayerTwo = false;
   }
 
-  for (int i = 0; i < scoreOfPlayerOne; i++) //We use the six LEDs in the middle to show score. Each player has three green LEDs to show score. This is why three goals win the game :)
+  for (int i = 0; i < scoreOfPlayerOne; i++) 
   {
     digitalWrite((11 - i), 1);
   }
@@ -234,15 +200,15 @@ void ShowScores(int playerCurrentlyScored)
     digitalWrite((6 + i), 1);
   }
 
-  delay(3000);                //Are three seconds enough for players to process the score?  
+  delay(3000);                
   ResetValuesForNextRound();
 }
 
 void ResetValuesForNextRound() 
 {
   FlashAllLEDs(1, 0);
-  millisecondsPerLED = initialMillisecondsPerLED;            //Sets speed to initial value at the beginning of each round.
-  deltaMillisecondsPerLED = initialDeltaMillisecondsPerLED;  //Sets delta speed to initial value at the beginning of each round.
+  millisecondsPerLED = initialMillisecondsPerLED;            
+  deltaMillisecondsPerLED = initialDeltaMillisecondsPerLED;  
 }
 
 void EndGameCeremonyFor(int winner)
@@ -255,7 +221,7 @@ void EndGameCeremonyFor(int winner)
 
 void TurnOnAllLEDsForPlayer(int player)
 {
-  if (player != 1)          //When this method is called with (2), only these pins(player two's) will turn on
+  if (player != 1)          
   {
     digitalWrite(4, 1);
     digitalWrite(5, 1);
@@ -263,7 +229,7 @@ void TurnOnAllLEDsForPlayer(int player)
     digitalWrite(7, 1);
     digitalWrite(8, 1);
   }
-  if (player != 2)          //When this method is called with (1), only these pins(player one's) will turn on
+  if (player != 2)          
   {
     digitalWrite(9, 1);
     digitalWrite(10, 1);
@@ -275,7 +241,7 @@ void TurnOnAllLEDsForPlayer(int player)
 
 void TurnOffAllLEDsForPlayer(int player)
 {
-  if (player != 1)          //When this method is called with (2), only these pins(player two's) will turn off
+  if (player != 1)          
   {
     digitalWrite(4, 0);
     digitalWrite(5, 0);
@@ -283,7 +249,7 @@ void TurnOffAllLEDsForPlayer(int player)
     digitalWrite(7, 0);
     digitalWrite(8, 0);
   }
-  if (player != 2)          //When this method is called with (1), only these pins(player one's) will turn off
+  if (player != 2)        
   {
     digitalWrite(9, 0);
     digitalWrite(10, 0);
@@ -293,7 +259,7 @@ void TurnOffAllLEDsForPlayer(int player)
   }
 }
 
-void FlashAllLEDs(int blinkCount, int player) //Second parameter(int player) is for when you want to flash only one player's LEDs. Use 1 for player one, use 2 for player two. 
+void FlashAllLEDs(int blinkCount, int player)
 {
   for (int i = 0; i < blinkCount; i++)
   {
