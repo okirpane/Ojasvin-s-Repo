@@ -21,7 +21,7 @@ unsigned long deltaMillisecondsPerLED = initialDeltaMillisecondsPerLED;
 unsigned long currentMillis = 0;
 unsigned long previousMillis = 0;
 
-int currentPosition = playerOne;        //Player one starts the game.
+int currentPosition = playerOne;        
 int previousPosition = playerOne + 1;
 int deltaPosition = 0;
 
@@ -41,10 +41,11 @@ void setup() {
   pinMode(11, 1);
   pinMode(12, 1);
   pinMode(13, 1);
-
+  
 
   pinMode(2, 0);    
   pinMode(3, 0);    
+}
 
 void loop()
 {
@@ -110,7 +111,7 @@ void IncreaseSpeed()
   millisecondsPerLED -= deltaMillisecondsPerLED;
   if (deltaMillisecondsPerLED > 5)  
   {
-    deltaMillisecondsPerLED -= 5; 
+    deltaMillisecondsPerLED -= 5;
   }
 }
 
@@ -204,7 +205,7 @@ void ShowScores(int playerCurrentlyScored)
   ResetValuesForNextRound();
 }
 
-void ResetValuesForNextRound() 
+void ResetValuesForNextRound()
 {
   FlashAllLEDs(1, 0);
   millisecondsPerLED = initialMillisecondsPerLED;            
@@ -249,7 +250,7 @@ void TurnOffAllLEDsForPlayer(int player)
     digitalWrite(7, 0);
     digitalWrite(8, 0);
   }
-  if (player != 2)        
+  if (player != 2)
   {
     digitalWrite(9, 0);
     digitalWrite(10, 0);
