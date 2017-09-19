@@ -1,0 +1,30 @@
+boolean clicked = false;
+
+void setup() {
+  size(600, 400);
+  background(250);
+}
+void draw() {
+  if (mouseX>250 && mouseY>150 && mouseX<350 && mouseY<200) { //if hoover
+    if (clicked) {// and  clicked
+      fill( 101, 131, 101);// dark green
+    }
+    else {// not clicked
+      fill(131);//darker gray
+    }
+  }
+  else {//not hovering
+
+    if (clicked) { // and clicked
+      fill(42, 255, 15);// green
+    } 
+    else {
+      fill(175);//gray
+    }
+  }
+  rect(250, 150, 100, 50);// draw anyway...
+}
+
+void mouseReleased() {
+  clicked = !clicked;
+}
