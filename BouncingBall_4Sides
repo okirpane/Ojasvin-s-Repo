@@ -1,0 +1,28 @@
+float elX = 30;
+float elY = 40;
+float elDiameter = 20;
+
+float elXSpeed = 2;
+float elYSpeed = 2;
+
+float lineY = 300;
+
+void setup() {
+  size(500, 400);
+}
+
+void draw() {
+  background(200);
+  elX += elXSpeed;
+  elY += elYSpeed;
+  fill ( random(255), random(255), random(255));
+  ellipse(elX, elY, elDiameter, elDiameter);
+  
+  if (elX > (width-10) || elX<10) {
+    // move up if you go passed the line
+    elXSpeed = elXSpeed * -1;
+  }
+  if (elY > (height-10) || elY < 10){
+    elYSpeed = elYSpeed * -1;
+  }
+}
