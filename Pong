@@ -1,0 +1,92 @@
+boolean gameStart = false;
+
+float x = 150;
+float y = 150;
+float speedX = random(3, 5);
+float speedY = random(3, 5);
+int leftColor = #1E6A98;
+int rightColor = #5BB0E4;
+int diam;
+int rectSize = 150;
+float diamHit;
+int brick = #A9FB7D;
+
+void setup() {
+  size(800, 400);
+  noStroke();
+  smooth();
+  ellipseMode(CENTER);
+}
+
+void draw() { 
+  background(#FFC5FF);
+
+  fill(128,128,128);
+  diam = 20;
+  ellipse(x, y, diam, diam);
+
+  fill(leftColor);
+  rect(0, 0, 20, height);
+  fill(rightColor);
+  rect(width-30, mouseY-rectSize/2, 10, rectSize);
+  fill(brick);
+  ellipse(400,100,90,90);
+
+  if (gameStart) {
+
+    x = x + speedX;
+    y = y + speedY;
+
+    // if ball hits movable bar, invert X direction and apply effects
+    if ( x > width-30 && x < width -20 && y > mouseY-rectSize/2 && y < mouseY+rectSize/2 ) {
+      speedX = speedX * -1;
+      x = x + speedX;
+      rightColor = 0;
+      fill(random(0,128),random(0,128),random(0,128));
+      diamHit = random(75,150);
+      ellipse(x,y,diamHit,diamHit);
+      rectSize = rectSize-10;
+      rectSize = constrain(rectSize, 10,150);      
+    } 
+
+    // if ball hits wall, change direction of X
+    else if (x < 25) {
+      speedX = speedX * -1.1;
+      x = x + speedX;
+      leftColor = 0;
+    }
+
+    else {     
+      leftColor = 128;
+      rightColor = 128;
+    }
+    if (dist (400,100,x,y)<=45)
+    { speedX = speedX * -1.1;
+      x = x + speedX;
+      brick = #52982D;
+    }
+    else
+    { brick = #A9FB7D;
+    }
+   
+    // resets things if you lose
+    if (x > width) { 
+      gameStart = false;
+      x = 150;
+      y = 150; 
+      speedX = random(3, 5);
+      speedY = random(3, 5);
+      rectSize = 150;
+    }
+
+
+    // if ball hits up or down, change direction of Y   
+    if ( y > height || y < 0 ) {
+      speedY = speedY * -1;
+      y = y + speedY;
+    }
+  }
+}
+void mousePressed() {
+  gameStart = !gameStart;
+}
