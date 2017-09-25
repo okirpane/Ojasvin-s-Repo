@@ -61,7 +61,9 @@ void draw() {
     }
     if (dist (400,100,x,y)<=45+10)
     { speedX = speedX * -1.1;
+    speedY = speedY * -1.1;
       x = x + speedX;
+      y = y + speedY;
       brick = #52982D;
     }
     else
