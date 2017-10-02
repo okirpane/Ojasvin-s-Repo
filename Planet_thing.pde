@@ -13,7 +13,7 @@ Planet(float r, float d, float o) {
   distance = d;
   angle = random(TWO_PI);
   orbitspeed = o;
-  fill (random(red[0],red[7]), random(green[0],green[7]), random(blue[0],blue[7]));
+  fill (random(red[0],red[7]), random(green[0],green[7]), random(blue[0],blue[7]), 200);
 
   //println(angle);
 }
