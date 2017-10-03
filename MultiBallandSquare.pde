@@ -22,14 +22,19 @@ class Bubble
 
   void ascend()
   {
+   
     y = y - yspeed;
-    x = x + random(-2, 2);
+   
     if (x > a && x < a+w && y > b && y < b+h )
     {
       yspeed = -1;
       stroke(#6C5B7B);
       strokeWeight(10);
       rect (a, b, w, h);
+    }
+    if (y < 10)
+    {
+      yspeed = -random(0.5, 2.5);
     }
   }
 }
