@@ -1,3 +1,5 @@
+//A friend of mine helped with this code. I thought i understood how it worked but I dont really understand the popMatrix and pushMatrix stuff.
+
 ArrayList<Insect> poop = new ArrayList();
 void setup() {
   size(1200, 600);
